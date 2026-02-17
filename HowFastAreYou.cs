@@ -1,19 +1,35 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 
 class HowFastAreYou
 {
     public static void Main()
     {
-        var baseSentence = "The lazy programmer keeps forgetting their job";
+        List<string> baseSentence = new List<string> 
+        { 
+            "lazy", "programmer", "will", "would", "because", 
+            "keyboard", "of", "from", "the", "and", "since" 
+        };
+
+        Random rand = new Random();
+        var numberOfWords = 10; 
+        List<string> randomWords = new List<string>();
+
+        for (var i = 0; i < numberOfWords; i++)
+        {
+            var index = rand.Next(baseSentence.Count); 
+            randomWords.Add(baseSentence[index]);
+        }
+        
+        string sentenceToType = string.Join(" ", randomWords);
 
         Console.WriteLine("This is a typing game, try to type as fast as you can");
-        Console.WriteLine($"\n {baseSentence}\n");
+        Console.WriteLine($"\n{sentenceToType}\n");
 
         Console.WriteLine("Press any key to start the game");
         Console.ReadKey();
         
         Console.Clear();
-        Console.WriteLine($"{baseSentence}\n");
+        Console.WriteLine($"{sentenceToType}\n");
         Console.Write("Start typing: ");
         
         Stopwatch stopwatch = new Stopwatch();
@@ -23,7 +39,7 @@ class HowFastAreYou
         stopwatch.Stop();
         var timeTaken = stopwatch.Elapsed;
 
-        var errorCount = CountErrors(baseSentence, userInput);
+        var errorCount = CountErrors(sentenceToType, userInput);
         
         Console.WriteLine("\n--- Results ---");
         Console.WriteLine($"Total time: {timeTaken.TotalSeconds:F2}s");
@@ -39,7 +55,6 @@ class HowFastAreYou
         {
             if (original[i] != typed[i])
                 errors++;
-            
         }
         errors += Math.Abs(original.Length - typed.Length);
         return errors;
